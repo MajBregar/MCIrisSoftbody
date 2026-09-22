@@ -1,0 +1,124 @@
+screen.BALL=Ball & Placement
+screen.MOTION=Motion
+screen.CONSTRAINTS=Shape & Constraints
+screen.COLLISIONS=Block Collisions & Friction
+screen.ENTITIES=Entity Proximity
+screen.FLUIDS=Water & Lava
+screen.APPEARANCE=Appearance
+
+option.SIMULATION_DISTANCE=Simulation Distance
+option.SIMULATION_DISTANCE.comment=Maximum camera-to-ball-center distance in blocks. Beyond this range the ball freezes and turns yellow; it resumes when you return. Higher values increase the shadow geometry capture range and may reduce performance.
+
+option.BALL_MODE=Ball Motion
+option.BALL_MODE.comment=Held mode follows the designated center when the tether is enabled. Free Roll releases the center and uses free gravity, damping and launch speed. Applying this setting reloads and resets the ball.
+value.BALL_MODE.0=Held
+value.BALL_MODE.1=Free Roll
+
+option.SPHERE_SPACE=Placement Axes
+option.SPHERE_SPACE.comment=World Axes keeps the placement offset aligned with world X/Y/Z while following the camera position. View Direction rotates the offset with your view: negative Z is forward. In Free Roll this only controls the initial placement and launch direction.
+value.SPHERE_SPACE.0=World Axes
+value.SPHERE_SPACE.1=View Direction
+
+option.SPHERE_RADIUS=Ball Radius
+option.SPHERE_RADIUS.comment=Rest radius in blocks. Scales the mesh, rest edge lengths, target volume and entity separation radius. Larger balls span more geometry and can cost more to simulate.
+
+option.SPHERE_X=Horizontal Offset (X)
+option.SPHERE_X.comment=Center offset in blocks from the camera: world X with World Axes, or right/left with View Direction. Positive values move toward positive X or right. Acts as the held target or free-mode spawn position.
+
+option.SPHERE_Y=Vertical Offset (Y)
+option.SPHERE_Y.comment=Center offset in blocks from the camera: world Y with World Axes, or up/down with View Direction. Positive values move up. Acts as the held target or free-mode spawn position.
+
+option.SPHERE_Z=Forward Offset (Z)
+option.SPHERE_Z.comment=Center offset in blocks from the camera: world Z with World Axes, or view depth with View Direction. Negative values place the ball toward world -Z or in front of the view. Acts as the held target or free-mode spawn position.
+
+option.GRAVITY=Held Gravity
+option.GRAVITY.comment=Downward acceleration in blocks per second squared while Ball Motion is Held. Zero disables gravity; 9.81 gives Earth-like acceleration. The center tether can oppose this force; fluid lift is configured separately.
+
+option.FREE_GRAVITY=Free Roll Gravity
+option.FREE_GRAVITY.comment=Downward acceleration in blocks per second squared while Ball Motion is Free Roll. Higher values increase falling speed and contact load. Fluid lift is independent, so stronger gravity can make the ball sit deeper or sink.
+
+option.VELOCITY_DAMPING=Held Damping
+option.VELOCITY_DAMPING.comment=Velocity decay rate per second in Held mode. Higher values settle wobble and motion faster; zero preserves velocity except for contacts and fluid drag. This is air damping, separate from surface friction.
+
+option.FREE_DAMPING=Free Roll Damping
+option.FREE_DAMPING.comment=Velocity decay rate per second in Free Roll mode. Low values let the ball keep rolling; higher values stop it sooner even in midair. Surface friction and fluid drag still apply independently.
+
+option.FREE_LAUNCH_SPEED=Free Roll Launch Speed
+option.FREE_LAUNCH_SPEED.comment=Initial speed in blocks per second after a reset in Free Roll mode. Launches toward world -Z or along the view direction, depending on Placement Axes. Zero releases the ball without a launch impulse.
+
+option.SOLVER_ITERATIONS=Constraint Iterations
+option.SOLVER_ITERATIONS.comment=Shape and collision correction rounds per physics substep. More rounds improve shape recovery under compression at a higher GPU cost. Physics runs at a fixed 120 steps per second, with up to four catch-up steps per frame.
+
+option.DISTANCE_COMPLIANCE=Edge Softness
+option.DISTANCE_COMPLIANCE.comment=Compliance of the distance constraints between connected vertices. Smaller values resist stretching; larger values allow softer deformation. Zero requests rigid edge lengths, though a finite iteration count still limits convergence.
+
+option.VOLUME_COMPLIANCE=Volume Softness
+option.VOLUME_COMPLIANCE.comment=Compliance of the closed-shell volume constraint. Smaller values preserve the enclosed volume more strongly; larger values allow compression. Increase iterations if a stiff volume target converges too slowly during contact.
+
+option.GRAB_ENABLED=Center Tether
+option.GRAB_ENABLED.comment=Pulls the ball centroid toward the designated center in Held mode. Disabling it lets the ball drift using Held gravity and damping. Free Roll always disables the tether, regardless of this setting.
+value.GRAB_ENABLED.0=Off
+value.GRAB_ENABLED.1=On
+
+option.GRAB_COMPLIANCE=Tether Softness
+option.GRAB_COMPLIANCE.comment=Compliance of the centroid tether in Held mode. Smaller values follow the designated center more tightly; larger values allow more lag and displacement. Has no effect when Center Tether is off or Free Roll is selected.
+
+option.COLLISION_ENABLED=Solid & Entity Collisions
+option.COLLISION_ENABLED.comment=Enables swept contacts with captured solid block surfaces and allows entity proximity response. Disabling this lets the ball pass through those obstacles. Water and lava forces have their own independent switch.
+value.COLLISION_ENABLED.0=Off
+value.COLLISION_ENABLED.1=On
+
+option.CONTACT_MARGIN=Vertex Contact Radius
+option.CONTACT_MARGIN.comment=Collision radius around each particle, in blocks. Larger values keep vertices farther from solid surfaces; small values let the visible mesh approach more closely. This changes contact spacing, not collision accuracy, and does not set entity clearance.
+
+option.STATIC_FRICTION=Static Surface Friction
+option.STATIC_FRICTION.comment=Coefficient controlling how strongly a contacting vertex resists the start of sliding. Higher values improve grip and help translation become rolling. Zero removes static sticking; dynamic friction still controls sliding.
+
+option.DYNAMIC_FRICTION=Sliding Surface Friction
+option.DYNAMIC_FRICTION.comment=Coefficient reducing tangential motion when a contact slides. Higher values remove more slip and can slow rolling; zero allows frictionless sliding after static grip is exceeded. Usually keep this at or below Static Surface Friction.
+
+option.ENTITY_COLLISIONS=Entity Proximity Response
+option.ENTITY_COLLISIONS.comment=Repels the ball from a coarse current-frame occupancy field around rendered entities and block entities. This is approximate proximity separation, not exact mesh contact. Requires Solid & Entity Collisions; disabling it also reduces entity capture work.
+value.ENTITY_COLLISIONS.0=Off
+value.ENTITY_COLLISIONS.1=On
+
+option.ENTITY_CLEARANCE=Entity Clearance
+option.ENTITY_CLEARANCE.comment=Extra separation in blocks around the ball for entity proximity tests. Higher values react earlier and keep a larger visible gap. The occupancy cells are half a block wide, so contact locations remain approximate.
+
+option.ENTITY_BOUNCE_TRANSFER=Entity Bounce Transfer
+option.ENTITY_BOUNCE_TRANSFER.comment=Fraction of entity separation motion transferred into ball velocity. Zero keeps full position separation without adding bounce; one transfers the full correction velocity. Intermediate values damp the bounce; inward velocity is still stopped.
+
+option.BUOYANCY_ENABLED=Fluid Forces
+option.BUOYANCY_ENABLED.comment=Enables water and lava buoyancy, drag and current forces. Disabling it removes all fluid forces and lets gravity carry the ball through liquids. Solid pool floors still collide when solid collisions are enabled.
+value.BUOYANCY_ENABLED.0=Off
+value.BUOYANCY_ENABLED.1=On
+
+option.BUOYANCY_STRENGTH=Buoyancy Strength
+option.BUOYANCY_STRENGTH.comment=Upward acceleration multiplier relative to 9.81 at full submersion. With gravity at 9.81, values above one float; higher values raise more of the ball above the surface. Requires Fluid Forces and affects water and lava equally.
+
+option.FLUID_CURRENTS=Flowing Liquid Currents
+option.FLUID_CURRENTS.comment=Uses captured liquid surface slope to drive an explicit horizontal current through fluid drag. Flat source surfaces have no current. Requires Fluid Forces and nonzero drag for the liquid; buoyancy remains active when currents are off.
+value.FLUID_CURRENTS.0=Off
+value.FLUID_CURRENTS.1=On
+
+option.WATER_CURRENT_SPEED=Water Current Speed
+option.WATER_CURRENT_SPEED.comment=Maximum water current speed in blocks per second. Shallower surface slopes produce slower flow; flat surfaces produce none. Water Drag controls how quickly the ball approaches that speed; zero disables water current only.
+
+option.LAVA_CURRENT_SPEED=Lava Current Speed
+option.LAVA_CURRENT_SPEED.comment=Maximum lava current speed in blocks per second. Shallower surface slopes produce slower flow; flat surfaces produce none. Lava Drag controls how quickly the ball approaches that speed; zero disables lava current only.
+
+option.WATER_DRAG=Water Drag
+option.WATER_DRAG.comment=Velocity decay rate per second at full submersion in water. Higher values settle bobbing faster and make the ball follow water current more strongly. Zero removes both water drag and its current coupling; buoyancy still applies.
+
+option.LAVA_DRAG=Lava Drag
+option.LAVA_DRAG.comment=Velocity decay rate per second at full submersion in lava. Higher values make motion more sluggish and couple it more strongly to lava current. Zero removes both lava drag and its current coupling; buoyancy still applies.
+
+option.SHOW_VERTICES=Show Vertex Markers
+option.SHOW_VERTICES.comment=Displays particle markers and triangle edges to inspect deformation and contacts. Contact markers turn red; a global capture or distance freeze colors the sphere yellow. Disabling markers leaves the simulated mesh and its collisions unchanged.
+value.SHOW_VERTICES.0=Off
+value.SHOW_VERTICES.1=On
+
+option.SMOOTH_NORMALS=Smooth Surface Shading
+option.SMOOTH_NORMALS.comment=Interpolates vertex normals across the sphere for a smooth appearance. Disable for flat triangle shading that reveals the mesh faces. Changes lighting only, not the mesh or physics.
+value.SMOOTH_NORMALS.0=Off
+value.SMOOTH_NORMALS.1=On
